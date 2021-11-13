@@ -1,0 +1,4 @@
+ primereact yup react-hook-form lodash primeflex primeicons react-use sass prismjs classnames react-transition-group  react-helmet @hookform/resolvers  redux-observable axios jwt-decode http-status-codes react-router redux-observable history connected-react-router
+
+
+ 

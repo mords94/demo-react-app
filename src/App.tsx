@@ -1,58 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import 'primereact/resources/themes/vela-blue/theme.css';
 
-function App() {
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import 'prismjs/themes/prism-coy.css';
+import './layout/flags/flags.css';
+import './layout/layout.scss';
+import Menu from './components/layout/Menu';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { store, history } from './store/store';
+import { useProfile } from './hooks/useUser';
+import { ThemeContextProvider } from './context/ThemeContext';
+import Router from './components/Router';
+import ToastContainer from './context/ToastContainer';
+
+const App: React.FC = () => {
+  useProfile();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <ThemeContextProvider>
+      <Provider store={store}>
+        <ToastContainer />
+        <Menu />
+        <ConnectedRouter history={history}>
+          <Router />
+        </ConnectedRouter>
+      </Provider>
+    </ThemeContextProvider>
   );
-}
+};
 
 export default App;
