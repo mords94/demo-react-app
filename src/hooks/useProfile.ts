@@ -1,9 +1,12 @@
 import { getAuthorizationToken } from '../utils/jwt';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { RoleType, User } from '../api/dto/User';
+import { User } from '../api/dto/User';
 import { OptionalClass } from '../utils/types';
 import { loadProfile } from '../features/login/loginSlice';
 import { useEffectOnce } from 'react-use';
+
+const useIsProfileLoading = (): boolean =>
+  useAppSelector((state) => state.login.loading);
 
 const useProfile = (): OptionalClass<User> => {
   const token = getAuthorizationToken();
@@ -19,14 +22,4 @@ const useProfile = (): OptionalClass<User> => {
   return user;
 };
 
-const useRole = (): RoleType => {
-  const user = useProfile();
-
-  if (user.isPresent()) {
-    return RoleType[user.get().role.roleType];
-  }
-
-  return RoleType.ROLE_GUEST;
-};
-
-export { useProfile, useRole };
+export { useProfile, useIsProfileLoading };

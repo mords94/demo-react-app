@@ -1,4 +1,4 @@
-import { Spinner } from '../components/common';
+import { format } from 'date-fns';
 
 const ONE_DAY = 60 * 60 * 24;
 const ONE_HOUR = 60 * 60;
@@ -8,7 +8,7 @@ const padDigits = (number: number) => String(number).padStart(2, `0`);
 
 export const formatCountdown = (diffInSeconds: number) => {
   if (diffInSeconds <= 1) {
-    return <Spinner />;
+    return;
   }
   const days = Math.floor(diffInSeconds / ONE_DAY);
   const hours = Math.floor((diffInSeconds - days * ONE_DAY) / ONE_HOUR);
@@ -20,3 +20,6 @@ export const formatCountdown = (diffInSeconds: number) => {
 
   return `${padDigits(hours)}:${padDigits(minutes)}:${padDigits(seconds)}`;
 };
+
+export const formatIso = (date: Date) =>
+  format(date, 'yyyy-MM-DD[T]HH:mm:ssZZ');

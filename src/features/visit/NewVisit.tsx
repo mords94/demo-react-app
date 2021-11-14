@@ -1,8 +1,8 @@
 import { Button } from 'primereact/button';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Guest, userToGuest } from '../../api/dto/User';
-import GuestLayout from '../../components/layout/GuestLayout';
-import { useProfile } from '../../hooks/useUser';
+import BaseLayout from '../../components/layout/BaseLayout';
+import { useProfile } from '../../hooks/useProfile';
 import { isNullOrUndefined, OptionalValue } from '../../utils/types';
 import { toast } from '../toast/toastService';
 import GuestForm from '../user/UserForm';
@@ -18,6 +18,7 @@ import Field from '../../components/form/Field';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { Place } from '../../api/dto/Place';
 import { Redirect } from 'react-router';
+import Card from '../../components/common/Card';
 
 const NewVisit: React.FC = () => {
   const user = useProfile();
@@ -106,7 +107,10 @@ const NewVisit: React.FC = () => {
   );
 
   const schema = {
-    placeId: yup.string().oneOf(places.map(({ id }) => id)),
+    placeId: yup.string().oneOf(
+      places.map(({ id }) => id),
+      'Selecting a place is mandatory'
+    ),
   };
 
   if (visit.isPresent()) {
@@ -114,61 +118,66 @@ const NewVisit: React.FC = () => {
   }
 
   return (
-    <GuestLayout title="New visit">
+    <BaseLayout title="New visit">
       <div className="grid">
         <div className="lg:col-3 md:col-12 sm:col-12 xs:col-12 xl:col-3 col-12">
-          <GuestForm onSubmit={handleSubmit} resetOnSubmit>
-            <Button
-              type="submit"
-              label="Add guest"
-              className="my-4 flex:1"
-              loading={loading || isPlacesLoading}
-            />
-          </GuestForm>
+          <Card>
+            <GuestForm onSubmit={handleSubmit} resetOnSubmit>
+              <Button
+                type="submit"
+                label="Add guest"
+                className="my-4 flex:1"
+                loading={loading || isPlacesLoading}
+              />
+            </GuestForm>
+          </Card>
         </div>
 
         <div className="lg:col-9 md:col-12 sm:col-12 xs:col-12 xl:col-9 col-12">
-          <DataTable
-            value={guests}
-            header="Registered guests"
-            emptyMessage="There are no guests yet."
-            responsiveLayout="stack"
-          >
-            <Column field="personDetails.firstName" />
-            <Column field="personDetails.lastName" />
-            <Column field="personDetails.email" />
-            <Column field="personDetails.phone" />
-          </DataTable>
-
-          <div className="col-12 my-4 flex flex-row">
-            <Form schema={schema} onSubmit={onSubmit}>
-              <div className="formgroup-inline">
-                <Field<DropdownProps>
-                  name="placeId"
-                  placeholder="Select a place"
-                  options={places}
-                  optionLabel="name"
-                  optionValue="id"
-                  component={Dropdown}
-                  disabled={isPlacesLoading}
-                  style={{ minWidth: 300 }}
-                  filter
-                />
-                <div className="field">
-                  <Button
-                    type="submit"
-                    label="Start visit"
-                    className="mx-4 my-2"
-                    disabled={!guests.length}
-                    loading={loading || isPlacesLoading}
+          <Card>
+            <DataTable
+              value={guests}
+              header="Registered guests"
+              emptyMessage="There are no guests yet."
+              responsiveLayout="stack"
+            >
+              <Column field="personDetails.firstName" />
+              <Column field="personDetails.lastName" />
+              <Column field="personDetails.email" />
+              <Column field="personDetails.phone" />
+            </DataTable>
+          </Card>
+          <div className="col-12">
+            <Card className="my-4 flex flex-row">
+              <Form schema={schema} onSubmit={onSubmit}>
+                <div className="formgroup-inline">
+                  <Field<DropdownProps>
+                    name="placeId"
+                    placeholder="Select a place"
+                    options={places}
+                    optionLabel="name"
+                    optionValue="id"
+                    component={Dropdown}
+                    disabled={isPlacesLoading}
+                    style={{ minWidth: 300 }}
+                    filter
                   />
+                  <div className="field">
+                    <Button
+                      type="submit"
+                      label="Start visit"
+                      className="mx-4 my-2"
+                      disabled={!guests.length}
+                      loading={loading || isPlacesLoading}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Form>
+              </Form>
+            </Card>
           </div>
         </div>
       </div>
-    </GuestLayout>
+    </BaseLayout>
   );
 };
 

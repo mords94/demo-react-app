@@ -2,13 +2,7 @@ import { AxiosResponse } from 'axios';
 import { push } from 'connected-react-router';
 import { combineEpics, ofType } from 'redux-observable';
 import { from, of } from 'rxjs';
-import {
-  switchMap,
-  map,
-  catchError,
-  tap,
-  ignoreElements,
-} from 'rxjs/operators';
+import { switchMap, map, catchError, tap, mergeMap } from 'rxjs/operators';
 import api from '../../api/api';
 import { AuthenticateResponse } from '../../api/dto/response/AuthenticateResponse';
 import { clearToken, setAuthorizationToken } from '../../utils/jwt';
@@ -23,6 +17,7 @@ import {
   signOut,
   signOutError,
 } from './loginSlice';
+import { loadCurrentVisit, resetVisit } from '../visit/visitSlice';
 
 const loginEpic = (action$: any) =>
   action$.pipe(
@@ -45,6 +40,9 @@ const loginEpic = (action$: any) =>
     )
   );
 
+const loggedInEpic = (action$: any) =>
+  action$.pipe(ofType(signedIn.toString()), map(loadCurrentVisit));
+
 const logOutEpic = (action$: any) =>
   action$.pipe(
     ofType(signOut.toString()),
@@ -59,8 +57,12 @@ const logOutEpic = (action$: any) =>
 const logOutHandledEpic = (action$: any) =>
   action$.pipe(
     ofType(signedOut.toString()),
-    map(() => push('/')),
-    ignoreElements()
+    mergeMap(() => [push('/'), resetVisit()])
   );
 
-export default combineEpics(loginEpic, logOutEpic, logOutHandledEpic);
+export default combineEpics(
+  loginEpic,
+  logOutEpic,
+  logOutHandledEpic,
+  loggedInEpic
+);

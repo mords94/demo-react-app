@@ -1,15 +1,15 @@
 import { Route, Switch } from 'react-router-dom';
+import { Routes } from '../config/routes';
 import Home from '../features/home/Home';
-import Profile from '../features/profile/Profile';
-import NewVisit from '../features/visit/NewVisit';
 
 const Router: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/" render={() => <Home />} />
-      <Route exact path="/profile" render={() => <Profile />} />
-      <Route exact path="/new-visit" render={() => <NewVisit />} />
-      <Route render={() => <div>Miss</div>} />
+      {Routes.ROUTES.map(({ path, component: Component }: Routes.Route) => (
+        <Route exact path={path} render={() => <Component />} />
+      ))}
+
+      <Route render={() => <Home />} />
     </Switch>
   );
 };

@@ -7,11 +7,13 @@ type ThemeType = 'light' | 'dark';
 interface ThemeContextValue {
   theme: ThemeType;
   toggleTheme: () => void;
+  isDark: boolean;
 }
 
 const ThemeContext = React.createContext<ThemeContextValue>({
   theme: 'dark',
   toggleTheme: () => {},
+  isDark: false,
 });
 
 export const ThemeContextProvider: React.FC = ({ children }) => {
@@ -25,10 +27,14 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
     }
   }, [setTheme, theme]);
 
-  const themeDir = theme === 'dark' ? 'vela-blue' : 'saga-blue';
+  const isDark = theme === 'light';
+
+  const themeDir = isDark ? 'vela-blue' : 'saga-blue';
 
   return (
-    <ThemeContext.Provider value={{ theme: theme ?? 'dark', toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme: theme ?? 'dark', toggleTheme, isDark }}
+    >
       <Helmet>
         <link rel="stylesheet" href={`/themes/${themeDir}/theme.css`} />
       </Helmet>

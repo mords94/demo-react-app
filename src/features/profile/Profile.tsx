@@ -2,8 +2,8 @@ import { pick } from 'lodash';
 import { Button } from 'primereact/button';
 import React, { useCallback } from 'react';
 import { Spinner } from '../../components/common';
-import { GuestLayout } from '../../components/layout';
-import { useProfile } from '../../hooks/useUser';
+import { BaseLayout } from '../../components/layout';
+import { useProfile } from '../../hooks/useProfile';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateProfile } from '../login/loginSlice';
 import UserForm from '../user/UserForm';
@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
   const user = useProfile();
 
   return (
-    <GuestLayout title="Profile">
+    <BaseLayout title="Profile">
       <div className="lg:col-4 lg:col-offset-4 md:col-12 sm:col-12 xs:col-12">
         {!user.isPresent() && <Spinner />}
         {user.isPresent() && (
@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
           </UserForm>
         )}
       </div>
-    </GuestLayout>
+    </BaseLayout>
   );
 };
 

@@ -4,12 +4,12 @@ import { MenuItem } from 'primereact/menuitem';
 import { useCallback, useRef } from 'react';
 import { useReduxEffect } from 'use-redux-effect';
 import { InputSwitch } from 'primereact/inputswitch';
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import LoginDialog from '../../features/login/LoginDialog';
-import { signedIn, signOut } from '../../features/login/loginSlice';
-import { DialogMethods } from '../common/Dialog';
-import RoundedButton from '../common/RoundedButton';
-import { useTheme } from '../../context/ThemeContext';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import LoginDialog from '../../../features/login/LoginDialog';
+import { signedIn, signOut } from '../../../features/login/loginSlice';
+import { DialogMethods } from '../../common/Dialog';
+import RoundedButton from '../../common/RoundedButton';
+import { useTheme } from '../../../context/ThemeContext';
 
 const UserMenu = () => {
   const menu = useRef<Menu>(null);
@@ -17,9 +17,7 @@ const UserMenu = () => {
   const { loading, user } = useAppSelector((state) => state.login);
   const dispatch = useAppDispatch();
 
-  const { theme, toggleTheme } = useTheme();
-
-  const isDark = theme === 'dark';
+  const { toggleTheme, isDark } = useTheme();
 
   const toggleLoginDialogCommand = useCallback(() => {
     loginDialog.current?.toggle();

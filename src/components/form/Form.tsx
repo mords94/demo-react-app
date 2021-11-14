@@ -42,7 +42,6 @@ function Form<TFormData extends Record<string, any> = Record<string, never>>({
 
       if (resetOnSubmit) {
         setTimeout(() => {
-          console.log('reset');
           event?.target.reset({});
           methods.reset();
         }, 100);
@@ -53,7 +52,12 @@ function Form<TFormData extends Record<string, any> = Record<string, never>>({
 
   return (
     <FormProvider {...methods}>
-      <form {...formProps} onSubmit={methods.handleSubmit(onSubmitInternal)}>
+      <form
+        {...formProps}
+        onSubmit={methods.handleSubmit(onSubmitInternal, (errors) =>
+          console.error(errors)
+        )}
+      >
         {children}
       </form>
     </FormProvider>

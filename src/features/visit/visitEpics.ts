@@ -4,7 +4,10 @@ import { from, of } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import api from '../../api/api';
 import { toast } from '../toast/toastService';
-import {
+import visitSlice, {
+  finishVisit,
+  finishVisitCommitted,
+  finishVisitError,
   loadCurrentVisit,
   loadCurrentVisitError,
   saveVisit,
@@ -12,6 +15,8 @@ import {
   visitSaved,
 } from './visitSlice';
 import { Visit } from '../../api/dto/Visit';
+import { UpdateVisitRequest } from '../../api/dto/request/UpdateVisitRequest';
+import { fetchEntityList$ } from '../../store/commonEpics';
 
 const saveVisitEpic = (action$: any) =>
   action$.pipe(
@@ -42,4 +47,26 @@ const loadCurrentVisitEpic = (action$: any) =>
     )
   );
 
-export default combineEpics(saveVisitEpic, loadCurrentVisitEpic);
+const finishCurrentVisitEpic = (action$: any) =>
+  action$.pipe(
+    ofType(finishVisit.toString()),
+    switchMap(
+      ({ payload: { id, finishDate } }: { payload: UpdateVisitRequest }) =>
+        from(api.patch(`/visit/${id}`, { finishDate })).pipe(
+          map(() => finishVisitCommitted()),
+          catchError((error) => of(finishVisitError(error)))
+        )
+    )
+  );
+
+const loadCurrentVisitListEpic = fetchEntityList$({
+  ...visitSlice.actions,
+  resolveUrl: () => '/visit/current_user/all',
+});
+
+export default combineEpics(
+  saveVisitEpic,
+  loadCurrentVisitEpic,
+  finishCurrentVisitEpic,
+  loadCurrentVisitListEpic
+);

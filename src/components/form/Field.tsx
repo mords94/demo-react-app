@@ -12,7 +12,6 @@ type FieldProps<TInputProps> = UseControllerProps &
   };
 
 type DefaultInputProps = Omit<InputTextProps, 'onChange' | 'onBlur' | 'value'>;
-// type UsedInputTextProps = Pick<InputTextProps, 'onChange' | 'onBlur' | 'value'>;
 
 const Field = <TInputProps extends Record<string, any> = DefaultInputProps>({
   name,
@@ -41,7 +40,7 @@ const Field = <TInputProps extends Record<string, any> = DefaultInputProps>({
             {...rest}
             {...inputProps}
             onChange={(e: any) => {
-              onChange(e.target.value ?? e.value ?? e);
+              onChange(e?.target?.value ?? e?.value ?? e);
             }}
             className={classNames({ 'p-invalid': invalid })}
           />

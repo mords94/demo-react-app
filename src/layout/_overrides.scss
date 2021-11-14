@@ -17,3 +17,15 @@ footer {
     padding-top: 1rem;
     border-top: 1px solid var(--surface-border);
 }
+
+
+.logo {
+    height: 40px;
+    margin-right: 2em;
+    margin-left: 1em;
+    cursor: pointer;
+}
+
+.p-menu.side-menu {
+    width: 100% !important;
+}

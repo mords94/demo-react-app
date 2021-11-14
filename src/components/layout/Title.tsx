@@ -9,7 +9,7 @@ const Title: React.FC<{ children: string }> = ({ children: pageTitle }) => {
     };
   });
 
-  return <h3>{pageTitle}</h3>;
+  return <h1>{pageTitle}</h1>;
 };
 
 export default Title;
