@@ -19,6 +19,7 @@ import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { Place } from '../../api/dto/Place';
 import { Redirect } from 'react-router';
 import Card from '../../components/common/Card';
+import { confirmDialog } from 'primereact/confirmdialog';
 
 const NewVisit: React.FC = () => {
   const user = useProfile();
@@ -35,12 +36,28 @@ const NewVisit: React.FC = () => {
 
   const onSubmit = useCallback(
     ({ placeId }) => {
-      dispatch(
-        saveVisit({
-          guests,
-          place: places.find(({ id }) => id === placeId) as Place,
-        })
-      );
+      if (guests.length === 1) {
+        confirmDialog({
+          message: 'You are the only one guest in the list.',
+          header: 'Are you sure want to continue?',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () =>
+            dispatch(
+              saveVisit({
+                guests,
+                place: places.find(({ id }: Place) => id === placeId) as Place,
+              })
+            ),
+          reject: () => {},
+        });
+      } else {
+        dispatch(
+          saveVisit({
+            guests,
+            place: places.find(({ id }: Place) => id === placeId) as Place,
+          })
+        );
+      }
     },
     [dispatch, guests, places]
   );
@@ -108,7 +125,7 @@ const NewVisit: React.FC = () => {
 
   const schema = {
     placeId: yup.string().oneOf(
-      places.map(({ id }) => id),
+      places.map(({ id }: Place) => id),
       'Selecting a place is mandatory'
     ),
   };

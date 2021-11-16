@@ -12,6 +12,27 @@ const items = [
       history.push('/dashboard');
     },
   },
+  {
+    label: 'Places',
+    icon: 'pi pi-fw pi-map',
+    command: () => {
+      history.push('/places');
+    },
+  },
+  {
+    label: 'Guests',
+    icon: 'pi pi-fw pi-user',
+    command: () => {
+      history.push('/guests');
+    },
+  },
+  {
+    label: 'Visits',
+    icon: 'pi pi-fw pi-map-marker',
+    command: () => {
+      history.push('/visits');
+    },
+  },
 ];
 
 const SideMenu: React.FC<SideMenuProps> = () => {

@@ -6,7 +6,7 @@ const Router: React.FC = () => {
   return (
     <Switch>
       {Routes.ROUTES.map(({ path, component: Component }: Routes.Route) => (
-        <Route exact path={path} render={() => <Component />} />
+        <Route key={path} exact path={path} render={() => <Component />} />
       ))}
 
       <Route render={() => <Home />} />

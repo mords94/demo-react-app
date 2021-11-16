@@ -67,6 +67,7 @@ const visitSlice = createSlice<VisitSliceState, CaseReducers, 'visit'>({
     },
     resetVisit: (state) => {
       state.visit = initialState.visit;
+      state.visits = initialState.visits;
     },
     loadData: (state) => {
       state.listLoading = true;

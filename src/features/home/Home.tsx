@@ -8,16 +8,19 @@ import {
 import VisitCard from './components/VisitCard';
 import NewVisitCard from './components/NewVisitCard';
 import CalendarCard from './components/CalendarCard';
+import { useProfile } from '../../hooks';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { visit } = useAppSelector((state) => state.visit);
-
+  const user = useProfile();
   useEffect(() => {
-    dispatch(loadCurrentVisit());
-    dispatch(loadCurrentVisitList());
-  }, [dispatch]);
+    if (user.isPresent()) {
+      dispatch(loadCurrentVisitList());
+      dispatch(loadCurrentVisit());
+    }
+  }, [dispatch, user]);
 
   return (
     <BaseLayout title="Welcome to covid tracker" className="">

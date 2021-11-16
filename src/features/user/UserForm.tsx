@@ -2,7 +2,7 @@ import { Field, Form, yup } from '../../components/form';
 import { FormProps, SchemaType } from '../../components/form/Form';
 import { DefaultValues } from 'react-hook-form';
 
-interface ProfileData {
+export interface ProfileData {
   personDetails: {
     firstName: string;
     lastName: string;
@@ -11,7 +11,7 @@ interface ProfileData {
   };
 }
 
-const profileDataDefault: ProfileData = {
+export const profileDataDefault: ProfileData = {
   personDetails: {
     firstName: '',
     lastName: '',
@@ -20,7 +20,7 @@ const profileDataDefault: ProfileData = {
   },
 };
 
-const profileSchema = {
+export const profileSchema = {
   personDetails: yup.object().shape({
     email: yup
       .string()

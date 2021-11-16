@@ -70,7 +70,7 @@ const VisitCard: React.FC<VisitCardProps> = ({ visit }) => {
         <Button
           label="Finish visit"
           onClick={() =>
-            finishVisitDialogRef.current?.open(visit.id.toString())
+            finishVisitDialogRef.current?.open(visit?.id?.toString() ?? '')
           }
           loading={elapsed <= 1}
         />

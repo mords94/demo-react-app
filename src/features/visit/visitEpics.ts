@@ -16,7 +16,8 @@ import visitSlice, {
 } from './visitSlice';
 import { Visit } from '../../api/dto/Visit';
 import { UpdateVisitRequest } from '../../api/dto/request/UpdateVisitRequest';
-import { fetchEntityList$ } from '../../store/commonEpics';
+import { fetchEntityList$, deleteEntity$ } from '../../store/commonEpics';
+import adminVisitSlice from './adminVisitSlice';
 
 const saveVisitEpic = (action$: any) =>
   action$.pipe(
@@ -64,9 +65,21 @@ const loadCurrentVisitListEpic = fetchEntityList$({
   resolveUrl: () => '/visit/current_user/all',
 });
 
+const loadAdminVisits = fetchEntityList$({
+  ...adminVisitSlice.actions,
+  resolveUrl: () => '/visit',
+});
+
+const deleteVisit = deleteEntity$({
+  ...adminVisitSlice.actions,
+  resolveUrl: ({ id }: Visit) => `/visit/${id}`,
+});
+
 export default combineEpics(
   saveVisitEpic,
   loadCurrentVisitEpic,
   finishCurrentVisitEpic,
-  loadCurrentVisitListEpic
+  loadCurrentVisitListEpic,
+  loadAdminVisits,
+  deleteVisit
 );

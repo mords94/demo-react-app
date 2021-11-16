@@ -21,8 +21,6 @@ const finishVisitDefault: FinishVisitFormData = {
   finishDate: formatISO(new Date()),
 };
 
-console.log({ finishVisitDefault });
-
 export interface FinishVisitDialogMethods {
   open: (id: string) => void;
 }

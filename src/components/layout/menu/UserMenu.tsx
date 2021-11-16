@@ -6,7 +6,12 @@ import { useReduxEffect } from 'use-redux-effect';
 import { InputSwitch } from 'primereact/inputswitch';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import LoginDialog from '../../../features/login/LoginDialog';
-import { signedIn, signOut } from '../../../features/login/loginSlice';
+import {
+  signedIn,
+  signIn,
+  signInError,
+  signOut,
+} from '../../../features/login/loginSlice';
 import { DialogMethods } from '../../common/Dialog';
 import RoundedButton from '../../common/RoundedButton';
 import { useTheme } from '../../../context/ThemeContext';
@@ -35,8 +40,16 @@ const UserMenu = () => {
     () => {
       loginDialog.current?.close();
     },
-    [signedIn.toString()],
-    []
+    [signIn.toString()],
+    [loginDialog]
+  );
+
+  useReduxEffect(
+    () => {
+      loginDialog.current?.open();
+    },
+    [signInError.toString()],
+    [loginDialog]
   );
 
   const loggedInItems = useCallback(

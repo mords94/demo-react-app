@@ -8,6 +8,7 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useState,
 } from 'react';
 import { useLocalStorage } from 'react-use';
 
@@ -26,7 +27,11 @@ export interface DialogMethods {
 
 const Dialog = forwardRef<DialogMethods, DialogProps>(
   ({ children, onShow: onShowProp, onHide: onHideProp, id, ...props }, ref) => {
-    const [visible, setVisible] = useLocalStorage<boolean>(id, false);
+    const [visible, setVisible] = id
+      ? // eslint-disable-next-line react-hooks/rules-of-hooks
+        useLocalStorage<boolean>(id, false)
+      : // eslint-disable-next-line react-hooks/rules-of-hooks
+        useState(false);
     useEffect(() => {}, []);
 
     const onShow = useCallback(() => {

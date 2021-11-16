@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useMemo } from 'react';
 import Title from './Title';
 import ToastContainer from '../../context/ToastContainer';
 import Menu from './menu/Menu';
-import { useIsGuest, useIsProfileLoading } from '../../hooks';
+import { useIsGuest, useIsProfileLoading, useProfile } from '../../hooks';
 import { Spinner } from '../common';
 import Card from '../common/Card';
 import { SideMenu } from './menu';
@@ -19,9 +19,9 @@ const BaseLayout: React.FC<PropsWithChildren<BaseLayoutProps>> = ({
 }) => {
   const loading = useIsProfileLoading();
   const isGuest = useIsGuest();
-
+  const user = useProfile();
   const content = useMemo(() => {
-    if (loading) {
+    if (loading && !user.isPresent()) {
       return (
         <Card>
           <Spinner />
@@ -30,7 +30,7 @@ const BaseLayout: React.FC<PropsWithChildren<BaseLayoutProps>> = ({
     }
 
     return children;
-  }, [children, loading]);
+  }, [children, loading, user]);
 
   return (
     <>

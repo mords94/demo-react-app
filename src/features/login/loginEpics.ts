@@ -31,9 +31,7 @@ const loginEpic = (action$: any) =>
           return signedIn(response.data.user);
         }),
         catchError((error) => {
-          if (isStatus(error, StatusCodes.UNAUTHORIZED)) {
-            toast.error('Invalid credentials');
-          }
+          toast.error('Invalid credentials');
           return of(signInError());
         })
       )
@@ -57,6 +55,7 @@ const logOutEpic = (action$: any) =>
 const logOutHandledEpic = (action$: any) =>
   action$.pipe(
     ofType(signedOut.toString()),
+
     mergeMap(() => [push('/'), resetVisit()])
   );
 

@@ -156,23 +156,21 @@ const updateEntityEpic$ =
 
 const deleteEntity$ =
   ({
-    deleteEntity,
-    deleteError,
-    deleteSuccess = [],
+    deleteEntityLoading,
+    deleteEntityError,
+    deleteEntitySuccess,
     resolveUrl,
-    getState = defaultGetState,
     resolveParams = defaultParamResolver,
   }) =>
   (action$, state$) =>
     action$.pipe(
-      filter(deleteEntity.match),
+      filter(deleteEntityLoading.match),
       switchMap(({ payload }) =>
         from(api.delete(resolveUrl(payload), ...resolveParams(payload))).pipe(
-          map(() => ({ payload, state: getState(state$) }))
+          map(() => deleteEntitySuccess()),
+          catchError(catchError$(deleteEntityError))
         )
-      ),
-      mergeMap(({ payload, state }) => deleteSuccess(payload, state)),
-      catchError(catchError$(deleteError))
+      )
     );
 
 const createRedirectEpic$ = (action, resolveRedirect) => (action$) =>
