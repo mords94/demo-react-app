@@ -2,7 +2,12 @@ import React, { PropsWithChildren, useMemo } from 'react';
 import Title from './Title';
 import ToastContainer from '../../context/ToastContainer';
 import Menu from './menu/Menu';
-import { useIsGuest, useIsProfileLoading, useProfile } from '../../hooks';
+import {
+  useIsGuest,
+  useIsProfileLoading,
+  useProfile,
+  useRole,
+} from '../../hooks';
 import { Spinner } from '../common';
 import Card from '../common/Card';
 import { SideMenu } from './menu';
@@ -55,6 +60,8 @@ const BaseLayout: React.FC<PropsWithChildren<BaseLayoutProps>> = ({
           </div>
         </div>
       </div>
+
+      <footer></footer>
     </>
   );
 };

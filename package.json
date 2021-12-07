@@ -76,5 +76,5 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/rx": "^4.1.2"
   },
-  "proxy": "http://localhost:8080/api"
+  "proxy": "http://localhost:5000"
 }

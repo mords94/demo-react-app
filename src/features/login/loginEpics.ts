@@ -7,8 +7,6 @@ import api from '../../api/api';
 import { AuthenticateResponse } from '../../api/dto/response/AuthenticateResponse';
 import { clearToken, setAuthorizationToken } from '../../utils/jwt';
 import { toast } from '../toast/toastService';
-import { isStatus } from '../../utils/error';
-import { StatusCodes } from 'http-status-codes';
 import {
   signedIn,
   signedOut,
@@ -23,7 +21,7 @@ const loginEpic = (action$: any) =>
   action$.pipe(
     ofType(signIn.toString()),
     switchMap(({ payload }) =>
-      from(api.post('/authenticate', payload)).pipe(
+      from(api.post('/api/authenticate', payload)).pipe(
         map((response: AxiosResponse<AuthenticateResponse>) => {
           setAuthorizationToken(response.data.token);
           localStorage.setItem('login', 'false');

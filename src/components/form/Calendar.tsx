@@ -31,8 +31,6 @@ export const Calendar: React.FC<CalendarProps> = ({
       return;
     }
 
-    console.log(event.target.value);
-
     if (!(event.target.value instanceof Date)) {
       throw new Error('Calendar field should have a Date value');
     }

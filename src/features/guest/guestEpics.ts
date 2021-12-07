@@ -9,18 +9,18 @@ import { Guest } from '../../api/dto/User';
 
 const loadGuestsEpic = fetchEntityList$({
   ...guestSlice.actions,
-  resolveUrl: () => '/guest',
+  resolveUrl: () => '/api/guest',
   resolveParams: (params) => [{ params }],
 });
 
 const createGuestEpic = createEntityEpic$({
   ...guestSlice.actions,
-  resolveUrl: () => `/guest`,
+  resolveUrl: () => `/api/guest`,
 });
 
 const updateGuestEpic = updateEntityEpic$({
   ...guestSlice.actions,
-  resolveUrl: ({ id }: Guest) => `/guest/${id}`,
+  resolveUrl: ({ id }: Guest) => `/api/guest/${id}`,
 });
 
 export default combineEpics(loadGuestsEpic, createGuestEpic, updateGuestEpic);

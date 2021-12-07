@@ -17,7 +17,7 @@ const getProfileEpic = (action$: any) =>
   action$.pipe(
     ofType(loadProfile.toString()),
     switchMap(() =>
-      from(api.get('/user/profile')).pipe(
+      from(api.get('/api/user/profile')).pipe(
         map((response: AxiosResponse<ProfileResponse>) => {
           toast.success(
             `Welcome back ${response.data.personDetails.firstName}`,
@@ -35,7 +35,7 @@ const updateProfileEpic = (action$: any) =>
   action$.pipe(
     ofType(updateProfile.toString()),
     switchMap(({ payload: user }) =>
-      from(api.patch('/user/profile', user)).pipe(
+      from(api.patch('/api/user/profile', user)).pipe(
         map((response: AxiosResponse<ProfileResponse>) => {
           toast.success('Profile has been saved');
           return signedIn(response.data);

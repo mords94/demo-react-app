@@ -23,7 +23,7 @@ const saveVisitEpic = (action$: any) =>
   action$.pipe(
     ofType(saveVisit.toString()),
     switchMap(({ payload }: { payload: Visit }) =>
-      from(api.post('/visit', payload)).pipe(
+      from(api.post('/api/visit', payload)).pipe(
         map((response: AxiosResponse<Visit>) => {
           toast.success(
             `Started visit at ${payload.place.name}`,
@@ -41,7 +41,7 @@ const loadCurrentVisitEpic = (action$: any) =>
   action$.pipe(
     ofType(loadCurrentVisit.toString()),
     switchMap(() =>
-      from(api.get('/visit/current_user')).pipe(
+      from(api.get('/api/visit/current_user')).pipe(
         map((response: AxiosResponse<Visit>) => visitSaved(response.data)),
         catchError((error) => of(loadCurrentVisitError(error)))
       )
@@ -53,7 +53,7 @@ const finishCurrentVisitEpic = (action$: any) =>
     ofType(finishVisit.toString()),
     switchMap(
       ({ payload: { id, finishDate } }: { payload: UpdateVisitRequest }) =>
-        from(api.patch(`/visit/${id}`, { finishDate })).pipe(
+        from(api.patch(`/api/visit/${id}`, { finishDate })).pipe(
           map(() => finishVisitCommitted()),
           catchError((error) => of(finishVisitError(error)))
         )
@@ -62,17 +62,18 @@ const finishCurrentVisitEpic = (action$: any) =>
 
 const loadCurrentVisitListEpic = fetchEntityList$({
   ...visitSlice.actions,
-  resolveUrl: () => '/visit/current_user/all',
+  resolveUrl: () => '/api/visit/current_user/all',
 });
 
 const loadAdminVisits = fetchEntityList$({
   ...adminVisitSlice.actions,
-  resolveUrl: () => '/visit',
+  resolveUrl: () => '/api/visit',
+  resolveParams: (params) => [{ params }],
 });
 
 const deleteVisit = deleteEntity$({
   ...adminVisitSlice.actions,
-  resolveUrl: ({ id }: Visit) => `/visit/${id}`,
+  resolveUrl: ({ id }: Visit) => `/api/visit/${id}`,
 });
 
 export default combineEpics(

@@ -8,14 +8,21 @@ import { useEffectOnce } from 'react-use';
 const useIsProfileLoading = (): boolean =>
   useAppSelector((state) => state.login.loading);
 
+let isLoadingGlobal = false;
 const useProfile = (): OptionalClass<User> => {
   const token = getAuthorizationToken();
   const { user, loading } = useAppSelector((state) => state.login);
   const dispatch = useAppDispatch();
 
   useEffectOnce(() => {
-    if (token.isPresent() && !user.isPresent() && !loading) {
+    if (
+      token.isPresent() &&
+      !user.isPresent() &&
+      !loading &&
+      !isLoadingGlobal
+    ) {
       dispatch(loadProfile());
+      isLoadingGlobal = true;
     }
   });
 

@@ -10,22 +10,22 @@ import { Place } from '../../api/dto/Place';
 
 const loadPlacesEpic = fetchEntityList$({
   ...placeSlice.actions,
-  resolveUrl: () => '/place',
+  resolveUrl: () => '/api/place',
 });
 
 const loadPlaceEpic = fetchEntity$({
   ...placeSlice.actions,
-  resolveUrl: ({ id }: Place) => `/place/${id}`,
+  resolveUrl: ({ id }: Place) => `/api/place/${id}`,
 });
 
 const createPlaceEpic = createEntityEpic$({
   ...placeSlice.actions,
-  resolveUrl: () => `/place`,
+  resolveUrl: () => `/api/place`,
 });
 
 const updatePlaceEpic = updateEntityEpic$({
   ...placeSlice.actions,
-  resolveUrl: ({ id }: Place) => `/place/${id}`,
+  resolveUrl: ({ id }: Place) => `/api/place/${id}`,
 });
 
 export default combineEpics(
